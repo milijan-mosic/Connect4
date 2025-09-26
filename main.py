@@ -1,3 +1,6 @@
+import os
+import pprint
+
 game_running: bool = True
 game_started: bool = False
 
@@ -26,7 +29,7 @@ def print_the_board():
     global column_submitted
     column_submitted = False
 
-    print(board)
+    pprint.pp(board)
 
 
 def check_win_condition():
@@ -45,7 +48,7 @@ def player_move():
 
 
 def clear_screen():
-    pass
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def ask_for_input() -> int:
