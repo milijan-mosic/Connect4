@@ -46,12 +46,37 @@ def print_the_board():
 
 
 def check_win_condition():
-    global game_running
-    return False
+    global game_running, winner
 
-    print(f"\nWinner is: {winner + 1}\n")
-    game_running = False
-    return True
+    directions: list[tuple[int, int]] = [
+        (0, 1),  # horizontal →
+        (1, 0),  # vertical ↓
+        (1, 1),  # diagonal ↘
+        (-1, 1),  # diagonal ↗
+    ]
+
+    for i in range(board_rows):
+        for j in range(board_columns):
+            player: int = board[i][j]
+            if player == 0:
+                continue
+
+            for dr, dc in directions:
+                count: int = 1
+                r, c = i, j
+                while count < 4:
+                    r += dr
+                    c += dc
+                    if r < 0 or r >= board_rows or c < 0 or c >= board_columns or board[r][c] != player:
+                        break
+                    count += 1
+
+                if count == 4:
+                    print(f"\nWinner is: Player #{player}\n")
+                    game_running = False
+                    return True
+
+    return False
 
 
 def check_for_valid_moves():
