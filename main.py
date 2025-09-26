@@ -14,7 +14,7 @@ column_submitted: bool = False
 winner: int = 1
 
 
-def config_valid():
+def config_valid() -> bool:
     global game_running
 
     if players < 2:
@@ -30,7 +30,7 @@ def config_valid():
     return True
 
 
-def init_game():
+def init_game() -> None:
     global game_started, board
 
     for _ in range(board_rows):
@@ -44,7 +44,7 @@ def init_game():
     game_started = True
 
 
-def change_player():
+def change_player() -> None:
     global player_to_move, players
 
     if player_to_move + 1 == players:
@@ -53,7 +53,7 @@ def change_player():
         player_to_move += 1
 
 
-def print_the_board():
+def print_the_board() -> None:
     global column_submitted
     column_submitted = False
 
@@ -61,7 +61,7 @@ def print_the_board():
     pprint.pp(board)
 
 
-def check_win_condition():
+def check_win_condition() -> bool:
     global game_running, winner
 
     directions: list[tuple[int, int]] = [
@@ -95,7 +95,7 @@ def check_win_condition():
     return False
 
 
-def check_for_valid_moves():
+def check_for_valid_moves() -> bool:
     global game_running
 
     for i in range(board_rows):
@@ -108,7 +108,7 @@ def check_for_valid_moves():
     return True
 
 
-def update_board(num: int):
+def update_board(num: int) -> None:
     global board
 
     if board[board_rows - 1][num] == 0:
@@ -121,7 +121,7 @@ def update_board(num: int):
             return
 
 
-def player_move():
+def player_move() -> None:
     print(f"\nPlayer to move: {player_to_move + 1}")
     player_input: int = ask_for_input()
 
@@ -129,10 +129,11 @@ def player_move():
         return
 
     update_board(num=player_input)
+
     change_player()
 
 
-def clear_screen():
+def clear_screen() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -162,7 +163,7 @@ def ask_for_input() -> int:
         return 0
 
 
-def run_game():
+def run_game() -> None:
     if not game_started:
         if not config_valid():
             return
