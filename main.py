@@ -145,7 +145,7 @@ def ask_for_input() -> int:
 
         if num < 0 or num > board_columns:
             print("\nInvalid input, please enter a valid column number.")
-            return 0
+            return -1
 
         column_submitted = True
         return num - 1
@@ -154,13 +154,11 @@ def ask_for_input() -> int:
         print("\nCtrl+C detected. Stopping game...")
         game_running = False
         column_submitted = True
-
         return -1
 
     except ValueError:
         print("\nInvalid input, please enter a number.")
-
-        return 0
+        return -1
 
 
 def run_game() -> None:
