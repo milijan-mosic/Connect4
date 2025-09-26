@@ -44,15 +44,27 @@ def print_the_board():
     print("\n")
     pprint.pp(board)
 
-    print(f"\nPlayer to move: {player_to_move + 1}")
-
 
 def check_win_condition():
+    global game_running
     return False
+
+    print(f"\nWinner is: {winner + 1}\n")
+    game_running = False
+    return True
 
 
 def check_for_valid_moves():
-    return False
+    global game_running
+
+    for i in range(board_rows):
+        for j in range(board_columns):
+            if board[i][j] == 0:
+                return False
+
+    print("\nGame is a draw. There are no valid moves...\n")
+    game_running = False
+    return True
 
 
 def update_board(num: int):
@@ -69,6 +81,7 @@ def update_board(num: int):
 
 
 def player_move():
+    print(f"\nPlayer to move: {player_to_move + 1}")
     player_input: int = ask_for_input()
 
     if player_input == -1:
@@ -115,11 +128,9 @@ def run_game():
     print_the_board()
 
     if check_win_condition():
-        print(f"\nWinner is: {winner + 1}")
         return
 
     if check_for_valid_moves():
-        print("\nGame is a draw. There are no valid moves...")
         return
 
     while not column_submitted:
