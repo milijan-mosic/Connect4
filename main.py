@@ -14,6 +14,22 @@ column_submitted: bool = False
 winner: int = 1
 
 
+def config_valid():
+    global game_running
+
+    if players < 2:
+        print("\nPlayer number should be equal to 2 or greater than 2\n")
+        game_running = False
+        return False
+
+    if board_columns < 4 or board_rows < 4:
+        print("\nBoard should have at least 4 rows and 4 columns\n")
+        game_running = False
+        return False
+
+    return True
+
+
 def init_game():
     global game_started, board
 
@@ -148,6 +164,9 @@ def ask_for_input() -> int:
 
 def run_game():
     if not game_started:
+        if not config_valid():
+            return
+
         init_game()
 
     print_the_board()
