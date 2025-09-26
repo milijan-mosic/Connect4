@@ -4,7 +4,7 @@ import pprint
 game_running: bool = True
 game_started: bool = False
 
-board: list[list[str]] = []
+board: list[list[int]] = []
 board_rows: int = 6
 board_columns: int = 7
 
@@ -18,14 +18,23 @@ def init_game():
     global game_started, board
 
     for _ in range(board_rows):
-        new_row: list[str] = []
+        new_row: list[int] = []
 
         for _ in range(board_columns):
-            new_row.append('')
+            new_row.append(0)
 
         board.append(new_row)
 
     game_started = True
+
+
+def change_player():
+    global player_to_move, players
+
+    if player_to_move + 1 == players:
+        player_to_move = 0
+    else:
+        player_to_move += 1
 
 
 def print_the_board():
@@ -46,11 +55,27 @@ def check_for_valid_moves():
     return False
 
 
+def update_board(num: int):
+    global board
+
+    if board[board_rows - 1][num] == 0:
+        board[board_rows - 1][num] = player_to_move + 1
+        return
+
+    for i in range(board_rows - 1, -1, -1):
+        if board[i][num] == 0:
+            board[i][num] = player_to_move + 1
+            return
+
+
 def player_move():
     player_input: int = ask_for_input()
 
     if player_input == -1:
         return
+
+    update_board(num=player_input)
+    change_player()
 
 
 def clear_screen():
@@ -62,9 +87,13 @@ def ask_for_input() -> int:
 
     try:
         num: int = int(input("\nEnter a column number: "))
-        column_submitted = True
 
-        return num
+        if num < 0 or num > board_columns:
+            print("\nInvalid input, please enter a valid column number.")
+            return 0
+
+        column_submitted = True
+        return num - 1
 
     except KeyboardInterrupt:
         print("\nCtrl+C detected. Stopping game...")
