@@ -8,7 +8,10 @@ board: list[list[str]] = []
 board_rows: int = 6
 board_columns: int = 7
 
+players: int = 2
+player_to_move: int = 0
 column_submitted: bool = False
+winner: int = 1
 
 
 def init_game():
@@ -29,7 +32,10 @@ def print_the_board():
     global column_submitted
     column_submitted = False
 
+    print("\n")
     pprint.pp(board)
+
+    print(f"\nPlayer to move: {player_to_move + 1}")
 
 
 def check_win_condition():
@@ -55,7 +61,7 @@ def ask_for_input() -> int:
     global game_running, column_submitted
 
     try:
-        num = int(input("Enter a column number: "))
+        num: int = int(input("\nEnter a column number: "))
         column_submitted = True
 
         return num
@@ -68,7 +74,7 @@ def ask_for_input() -> int:
         return -1
 
     except ValueError:
-        print("Invalid input, please enter a number.")
+        print("\nInvalid input, please enter a number.")
 
         return 0
 
@@ -80,9 +86,11 @@ def run_game():
     print_the_board()
 
     if check_win_condition():
+        print(f"\nWinner is: {winner + 1}")
         return
 
     if check_for_valid_moves():
+        print("\nGame is a draw. There are no valid moves...")
         return
 
     while not column_submitted:
